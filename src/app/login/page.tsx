@@ -1,6 +1,9 @@
 "use client";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { auth, googleAuthProvider } from "../../../lib/firebase";
+import { useContext } from "react";
+import { auth, googleAuthProvider } from "@/lib/firebase";
+import { UserContext } from "@/lib/userContext";
+import FirestoreCollection from "@/api/firestoreEvent";
 
 const SignInButton = () => {
   const signInWithGoolge = async () => {
@@ -16,17 +19,24 @@ const SignOutButton = () => {
   return <div onClick={async () => signOut(auth)}>Google sign out</div>;
 };
 
-const UsernameForm = () => {
-  return <></>;
+const UsernameForm = ({ name, photoURL }: { name: string; photoURL: string }) => {
+  return (
+    <div>
+      {name}
+      {photoURL && <img src={photoURL} alt="User Avatar" />}
+    </div>
+  );
 };
 
 const Login = () => {
-  const user = null;
-  const username = null;
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { user, userName } = userInfo;
 
   return (
     <div>
-      {user ? !username ? <UsernameForm /> : <SignOutButton /> : <SignInButton />}
+      {user && userName && <UsernameForm name={userName} photoURL={user.photoURL} />}
+      {user ? <SignOutButton /> : <SignInButton />}
+      <FirestoreCollection />
     </div>
   );
 };

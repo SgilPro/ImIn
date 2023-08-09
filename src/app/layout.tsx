@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
+import { UserContextProvider } from "@/lib/userContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,12 +26,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex">
-          <RouterOption name={"Home"} url={"./"} />
-          <RouterOption name={"Login"} url={"./login"} />
-          <RouterOption name={"Event"} url={"./event"} />
-        </div>
-        {children}
+        <UserContextProvider>
+          <div className="flex">
+            <RouterOption name={"Home"} url={"./"} />
+            <RouterOption name={"Login"} url={"./login"} />
+            <RouterOption name={"Event"} url={"./event"} />
+          </div>
+          {children}
+        </UserContextProvider>
       </body>
     </html>
   );
